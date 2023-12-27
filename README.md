@@ -1,5 +1,5 @@
 ## SMC-001
-<img src="assets/SMC001.jpg" height="400px">
+<img src="assets/SMC001.png" height="400px">
 <a href="https://www.motorbank.kr/goods/goods_list.php?cateCd=066">구매하러 가기</a>
 
 ### Description
