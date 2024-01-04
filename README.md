@@ -13,6 +13,7 @@ Updated on 24.01.04
 
 ### Description
 SMC-001 보드를 Arduino Uno 및 DFR CAN Shield를 이용하여 제어하는 예제코드 모음.  
+
 **지원 제어 종류**  
 * Mode 0: 펄스기반 위치제어
 * Mode 1: 지속 회전 속도제어
