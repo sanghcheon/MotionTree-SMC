@@ -3,7 +3,8 @@ Updated on 24.01.04
 
 ### SMC-001
 <img src="SMC001.png" height="300px">
-<a href="https://www.motorbank.kr/goods/goods_list.php?cateCd=066">구매 및 메뉴얼 바로가기</a>  
+<a href="https://www.motorbank.kr/goods/goods_list.php?cateCd=066">구매 및 메뉴얼 바로가기</a>
+  
 **문의하기**: clare.robotmart@gmail.com
 
 ### Description
