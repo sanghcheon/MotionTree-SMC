@@ -4,7 +4,8 @@ Updated on 24.01.04
 
 ### SMC-001
 <img src="SMC001.png" height="300px">
-<a href="https://www.motorbank.kr/goods/goods_list.php?cateCd=066">구매 및 메뉴얼 바로가기</a>
+<a href="https://www.motorbank.kr/goods/goods_list.php?cateCd=066">구매 바로가기</a>
+<a href="./SMC-001_RM.pdf">메뉴얼 다운로드</a>
   
 **문의하기**: *clare<k>.<k>robotmart<k>@<k>gmail<k>.<k>com<k>*
 
@@ -14,6 +15,7 @@ SMC-001 보드를 Arduino Uno 및 DFR CAN Shield를 이용하여 제어하는 �
 * Mode 0: 펄스기반 위치제어
 * Mode 1: 지속 회전 속도제어
 * Mode 2: 엔코더 기반 위치제어
+
 
 ### CAN Header File 준비
 DFR CAN Shield 제공 라이브러리 [다운로드][1] or [mcp_can][2] 폴더 사용.  
