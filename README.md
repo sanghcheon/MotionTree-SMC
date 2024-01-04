@@ -31,7 +31,7 @@ DFR CAN Shield 제공 라이브러리 [다운로드][3] or [mcp_can][4] 폴더 �
 |**Mode 0** Basic| [examples/BasicDemo_Mode0](./examples/BasicDemo_Mode0) | X |
 |**Mode 1** Basic| [examples/BasicDemo_Mode1](./examples/BasicDemo_Mode1) | X |
 |**Mode 2** Basic| [examples/BasicDemo_Mode2](./examples/BasicDemo_Mode2) | O |
-
+|**Mode 2** Tracking Position| [examples/TrackingPosition_Mode2](./examples/TrackingPosition_Mode2) | O |
 
 
 

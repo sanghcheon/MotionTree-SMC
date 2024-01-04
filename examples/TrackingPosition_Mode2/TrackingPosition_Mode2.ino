@@ -10,17 +10,19 @@ unsigned char len = 0;
 unsigned char buf[8];
 char str[20];
 
+int32_t current_position;
+uint16_t loop_cycle = 0;
+uint8_t flag = 0;
+
 void setup()
 {
   Serial.begin(115200);
-  while(!Serial);
   
   int count = 50;
   do {
     CAN.init();
     if (CAN_OK == CAN.begin(CAN_1000KBPS))                  // init can bus : baudrate = 1000k
     {
-      Serial.println("CAN BUS Shield init ok");
       break;
     }
     else
@@ -34,15 +36,33 @@ void setup()
   attachInterrupt(0, MCP2515_ISR, FALLING);
 
   encoder_reset(0x001); // Encoder Reset
+  current_position = 0;
+  delay(100);
 }
 
 void loop()
 {
-  mode2(0x001, 1, 25000, 2, 0.5);  // CAN_ID, ENABLE, TARGET_POSITION, P GAIN, D GAIN
-  delay(5000);
-
-  mode2(0x001, 1, 0, 2, 0.5);      // CAN_ID, ENABLE, TARGET_POSITION, P GAIN, D GAIN
-  delay(5000);
+  if (loop_cycle <= 0)
+  {
+    loop_cycle = 400;
+    switch(flag)
+    {
+      case 0: mode2(0x001, 1, 20000, 2, 0.5);
+              flag = 1;
+              break;
+      case 1: mode2(0x001, 1, 0, 2, 0.5);
+              flag = 0;
+              break;
+    }
+  }
+  else
+  {
+    loop_cycle -= 1;
+  }
+  request_position(0x001);
+  Serial.println(current_position);
+  
+  delay(10);
 }
 
 void encoder_reset(uint16_t can_id)
@@ -51,13 +71,7 @@ void encoder_reset(uint16_t can_id)
   data[0] = 0xFD; // Header
   data[1] = 0x01; // Request
   
-  CAN.sendMsgBuf(can_id, 0, 2, data);
-
-  Serial.print(F("<< CAN Tx:  0x00")); Serial.print(can_id, HEX);
-  hexPrint(data[0]);
-  hexPrint(data[1]);
-  Serial.println();
-  
+  CAN.sendMsgBuf(can_id, 0, 2, data);  
 }
 
 void mode2(uint16_t can_id, uint8_t ena, int32_t pos, float kp, float kd)
@@ -73,17 +87,23 @@ void mode2(uint16_t can_id, uint8_t ena, int32_t pos, float kp, float kd)
   data[7] = (uint8_t) (kd * 10); // D Gain 
   
   CAN.sendMsgBuf(can_id, 0, 8, data);
+}
 
-  Serial.print(F("<< CAN Tx:  0x00")); Serial.print(can_id, HEX);
-  hexPrint(data[0]);
-  hexPrint(data[1]);
-  hexPrint(data[2]);
-  hexPrint(data[3]);
-  hexPrint(data[4]);
-  hexPrint(data[5]);
-  hexPrint(data[6]);
-  hexPrint(data[7]);
-  Serial.println();
+void request_position(uint16_t can_id)
+{
+  uint8_t data[2];
+  data[0] = 0xFD; // Header
+  data[1] = 0x00; // Request
+  
+  CAN.sendMsgBuf(can_id, 0, 2, data);  
+}
+
+void read_position(uint16_t can_id)
+{
+  if ((buf[0] == 0xFD) && (CAN.getCanId() == can_id + 0x100))
+  {
+    current_position = buf[2] | (buf[3] << 8) | (buf[4] << 16) | (buf[5] << 24);
+  } 
 }
 
 void MCP2515_ISR()
@@ -92,25 +112,6 @@ void MCP2515_ISR()
   {
     buf[8] = {0, };
     CAN.readMsgBuf(&len, buf);
-    Serial.print(F(">> CAN Rx:  0x")); Serial.print(CAN.getCanId(), HEX);
-
-    // print the data
-    for (int i = 0; i < len; i++)
-    {
-      hexPrint(buf[i]);
-    }
-    Serial.println();
-  }
-}
-
-void hexPrint(uint8_t data)
-{
-  if (data <= 15)
-  {
-    Serial.print(F("  0x0")); Serial.print(data, HEX);
-  }
-  else
-  {
-    Serial.print(F("  0x")); Serial.print(data, HEX);
+    read_position(0x001);
   }
 }

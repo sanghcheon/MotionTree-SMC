@@ -10,6 +10,8 @@ unsigned char len = 0;
 unsigned char buf[8];
 char str[20];
 
+uint16_t pps = 0;
+
 void setup()
 {
   Serial.begin(115200);
@@ -32,47 +34,27 @@ void setup()
   } while (count--);
 
   attachInterrupt(0, MCP2515_ISR, FALLING);
-
-  encoder_reset(0x001); // Encoder Reset
 }
 
 void loop()
 {
-  mode2(0x001, 1, 25000, 2, 0.5);  // CAN_ID, ENABLE, TARGET_POSITION, P GAIN, D GAIN
-  delay(5000);
-
-  mode2(0x001, 1, 0, 2, 0.5);      // CAN_ID, ENABLE, TARGET_POSITION, P GAIN, D GAIN
-  delay(5000);
+  
+  mode1(0x001, 1, 0, pps);  // CAN_ID, ENABL복E, DIRECTION, PULSE PER SECOND
+   
+  (pps > 20000) ? pps = 0 : pps+=100; // increasing the rotation speed
+  delay(100);
 }
 
-void encoder_reset(uint16_t can_id)
+void mode1(uint16_t can_id, uint8_t ena, uint8_t dir, uint16_t pps)
 {
-  uint8_t data[2];
-  data[0] = 0xFD; // Header
-  data[1] = 0x01; // Request
-  
-  CAN.sendMsgBuf(can_id, 0, 2, data);
-
-  Serial.print(F("<< CAN Tx:  0x00")); Serial.print(can_id, HEX);
-  hexPrint(data[0]);
-  hexPrint(data[1]);
-  Serial.println();
-  
-}
-
-void mode2(uint16_t can_id, uint8_t ena, int32_t pos, float kp, float kd)
-{
-  uint8_t data[8];
-  data[0] = 0x02; // Header
+  uint8_t data[5];
+  data[0] = 0x01; // Header
   data[1] = ena; // Enable
-  data[2] = (uint8_t) (pos      ); // Position Target Lowest
-  data[3] = (uint8_t) (pos >> 8 ); // Position Target Low
-  data[4] = (uint8_t) (pos >> 16); // Position Target High
-  data[5] = (uint8_t) (pos >> 24); // Position Target Highest
-  data[6] = (uint8_t) (kp * 10); // P Gain
-  data[7] = (uint8_t) (kd * 10); // D Gain 
+  data[2] = dir; // Direction
+  data[3] = (uint8_t) (pps     ); // Pulse Per Second Low
+  data[4] = (uint8_t) (pps >> 8); // Pulse Per Second High
   
-  CAN.sendMsgBuf(can_id, 0, 8, data);
+  CAN.sendMsgBuf(can_id, 0, 5, data);
 
   Serial.print(F("<< CAN Tx:  0x00")); Serial.print(can_id, HEX);
   hexPrint(data[0]);
@@ -80,9 +62,6 @@ void mode2(uint16_t can_id, uint8_t ena, int32_t pos, float kp, float kd)
   hexPrint(data[2]);
   hexPrint(data[3]);
   hexPrint(data[4]);
-  hexPrint(data[5]);
-  hexPrint(data[6]);
-  hexPrint(data[7]);
   Serial.println();
 }
 
