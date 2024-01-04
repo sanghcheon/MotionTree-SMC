@@ -1,5 +1,6 @@
 ## SMC-00X Series
-Updated on 24.01.04
+Updated on 24.01.04  
+*업데이트 진행중*
 
 ### SMC-001
 <img src="SMC001.png" height="300px">
