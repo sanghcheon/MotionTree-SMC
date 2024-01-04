@@ -24,10 +24,10 @@ DFR CAN Shield 제공 라이브러리 [다운로드][1] or [mcp_can][2] 폴더 �
 ### Examples
 
 | 제어 종류 |  예제 파일 | 엔코더 필요 여부 |
-|-----------|:----------------------:|
-|**Mode 0** Baisc| [examples/BasicDemo_Mode0](./examples/BasicDemo_Mode0) |
-|**Mode 1** Baisc| [examples/BasicDemo_Mode1](./examples/BasicDemo_Mode1) |
-|**Mode 2** Baisc| [examples/BasicDemo_Mode2](./examples/BasicDemo_Mode2) |
+|-----------|:----------------------:|:----------------------:|
+|**Mode 0** Baisc| [examples/BasicDemo_Mode0](./examples/BasicDemo_Mode0) | X |
+|**Mode 1** Baisc| [examples/BasicDemo_Mode1](./examples/BasicDemo_Mode1) | X |
+|**Mode 2** Baisc| [examples/BasicDemo_Mode2](./examples/BasicDemo_Mode2) | O |
 
 
 
