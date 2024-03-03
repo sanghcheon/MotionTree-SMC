@@ -12,7 +12,9 @@ Updated on 24.01.04
 **문의하기**: *clare<k>.<k>robotmart<k>@<k>gmail<k>.<k>com<k>*
 
 ### Description
-SMC-001 보드를 Arduino Uno 및 DFR CAN Shield를 이용하여 제어하는 예제코드 모음.  
+SMC-001 보드를 Arduino Uno 및 DFR CAN Shield를 이용하여 제어하는 예제코드 모음.
+해당 예제코트는 3200PPR을 기준으로 작성되었음 (모터 드라이버 분해능 조절 권장).
+
 
 **지원 제어 종류**  
 * Mode 0: 펄스기반 위치제어
